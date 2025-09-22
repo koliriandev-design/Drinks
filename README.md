@@ -1,3 +1,4 @@
+Логика работы:
 В OrderMenu вызываем SetAddonsItems и SetDrinksItems чтобы передать в списки (UI\Widgets\WBP_AddonsList и WBP_DrinksList)
 ListView внутри списка создаёт строки (UI\SubWidgets\WBP_AddonRow или WBP_DrinkRow) и срабатывает OnAddonsEntryGenerated / OnDrinksEntryGenerated. 
 
