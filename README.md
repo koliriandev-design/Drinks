@@ -1,7 +1,11 @@
-Blueprints\UI\BP\BP_StringItem – объект с данными одного пункта (название, выбран/не выбран). 
-Blueprints\UI\BP\OrderViewModel_BP – хранит состояние заказа, выбранные позиции и цены, связывает данные с UI.
-Blueprints\UI\SubWidgets\WBP_AddonRow, WBP_DrinkRow – строка аддона с названием и чекбоксом. 
-Blueprints\UI\SubWidgets\WBP_AddonsList, WBP_DrinksList – список всех аддонов,напитков собирает строки и отдаёт выбранные. 
-Blueprints\UI\Widgets\WBP_OrderMenu – экран заказа, показывает списки напитков и аддонов, формирует заказ. 
-Blueprints\UI\Widgets\WBP_ConfirmationWidget – экран подтверждения заказа с кнопками «Подтвердить» и «Назад». 
-Blueprints\UI\Widgets\WBP_MainMenu – главный экран с кнопками «Открыть меню заказа» и «Выход». 
+В OrderMenu вызываем SetAddonsItems и SetDrinksItems чтобы передать в списки (UI\Widgets\WBP_AddonsList и WBP_DrinksList)
+ListView внутри списка создаёт строки (UI\SubWidgets\WBP_AddonRow или WBP_DrinkRow) и срабатывает OnAddonsEntryGenerated / OnDrinksEntryGenerated. 
+
+Когда пользователь кликает по чекбоксу срабатывает OnRowStateChanged 
+и строка отправляет сигнал о том, какой пункт и с каким состоянием изменился UI\BP\BP_StringItem (в нем название, цена, выбран/не выбран).
+Список ловит этот сигнал обновляет набор выбранных элементов и вызывает наружное событие OnAddonsSelected или OnDrinksSelected.
+
+OrderMenu подписан на эти события, получает обновлённый выбор и передаёт его в UI\BP\OrderViewModel.
+OrderViewModel хранит актуальный состав заказа и при переходе на экран подтверждения (UI\Widgets\ConfirmationWidget) отдаёт туда эти данные.
+
+*WBP_DrinkRow и WBP_AddonRow, чтобы каждая позиция списка имела свой отдельный виджет с чекбоксом и возможно иконкой(иконку я не реализовывал)
